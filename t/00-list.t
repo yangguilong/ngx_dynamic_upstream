@@ -22,7 +22,7 @@ __DATA__
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends
+    GET /dynamic?upstream=backends
 --- response_body
 server 127.0.0.1:6001;
 server 127.0.0.1:6002;
@@ -42,7 +42,7 @@ server 127.0.0.1:6003;
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends&verbose=
+    GET /dynamic?upstream=backends&verbose=
 --- response_body
 server 127.0.0.1:6001 weight=1 max_fails=1 fail_timeout=10;
 server 127.0.0.1:6002 weight=1 max_fails=1 fail_timeout=10;

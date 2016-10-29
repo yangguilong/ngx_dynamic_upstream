@@ -22,7 +22,7 @@ __DATA__
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends&server=127.0.0.1:6003&down=
+    GET /dynamic?upstream=backends&server=127.0.0.1:6003&down=
 --- response_body
 server 127.0.0.1:6001 weight=1 max_fails=1 fail_timeout=10;
 server 127.0.0.1:6002 weight=1 max_fails=1 fail_timeout=10;
@@ -42,6 +42,6 @@ server 127.0.0.1:6003 weight=1 max_fails=1 fail_timeout=10 down;
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends&server=127.0.0.1:6003&down=&up=
+    GET /dynamic?upstream=backends&server=127.0.0.1:6003&down=&up=
 --- response_body_like: 400 Bad Request
 --- error_code: 400

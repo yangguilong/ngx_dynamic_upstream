@@ -22,7 +22,7 @@ __DATA__
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends&server=127.0.0.1:6004&add=
+    GET /dynamic?upstream=backends&server=127.0.0.1:6004&add=
 --- response_body
 server 127.0.0.1:6001;
 server 127.0.0.1:6002;
@@ -43,7 +43,7 @@ server 127.0.0.1:6004;
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends&server=127.0.0.1:6004&add=&weight=10
+    GET /dynamic?upstream=backends&server=127.0.0.1:6004&add=&weight=10
 --- response_body
 server 127.0.0.1:6001 weight=1 max_fails=1 fail_timeout=10;
 server 127.0.0.1:6002 weight=1 max_fails=1 fail_timeout=10;
@@ -64,7 +64,7 @@ server 127.0.0.1:6004 weight=10 max_fails=1 fail_timeout=10;
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends&server=127.0.0.1:6003&add=
+    GET /dynamic?upstream=backends&server=127.0.0.1:6003&add=
 --- response_body_like: 400 Bad Request
 --- error_code: 400
 
@@ -82,6 +82,6 @@ server 127.0.0.1:6004 weight=10 max_fails=1 fail_timeout=10;
         dynamic_upstream;
     }
 --- request
-    GET /dynamic?upstream=zone_for_backends&server=127.0.0.1:6004&add=&remove=
+    GET /dynamic?upstream=backends&server=127.0.0.1:6004&add=&remove=
 --- response_body_like: 400 Bad Request
 --- error_code: 400
