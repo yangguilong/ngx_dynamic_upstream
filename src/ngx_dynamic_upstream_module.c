@@ -7,7 +7,7 @@
 
 
 static ngx_http_upstream_srv_conf_t *
-ngx_dynamic_upstream_get_zone(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *op);
+ngx_dynamic_upstream_get_upstream(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *op);
 static ngx_int_t
 ngx_dynamic_upstream_create_response_buf(ngx_http_upstream_rr_peers_t *peers, ngx_buf_t *b, size_t size, ngx_int_t verbose);
 static ngx_int_t
@@ -62,7 +62,7 @@ ngx_module_t ngx_dynamic_upstream_module = {
 
 
 static ngx_http_upstream_srv_conf_t *
-ngx_dynamic_upstream_get_zone(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *op)
+ngx_dynamic_upstream_get_stream(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *op)
 {
     ngx_uint_t                      i;
     ngx_http_upstream_srv_conf_t   *uscf, **uscfp;
@@ -73,9 +73,9 @@ ngx_dynamic_upstream_get_zone(ngx_http_request_t *r, ngx_dynamic_upstream_op_t *
 
     for (i = 0; i < umcf->upstreams.nelts; i++) {
         uscf = uscfp[i];
-        if (uscf->shm_zone != NULL &&
-            uscf->shm_zone->shm.name.len == op->upstream.len &&
-            ngx_strncmp(uscf->shm_zone->shm.name.data, op->upstream.data, op->upstream.len) == 0)
+        if (uscf->host.data != NULL &&
+            uscf->host.len == op->upstream.len &&
+            ngx_strncmp(uscf->host.data, op->upstream.data, op->upstream.len) == 0)
         {
             return uscf;
         }
@@ -160,7 +160,7 @@ ngx_dynamic_upstream_handler(ngx_http_request_t *r)
         return op.status;
     }
     
-    uscf = ngx_dynamic_upstream_get_zone(r, &op);
+    uscf = ngx_dynamic_upstream_get_upstream(r, &op);
     if (uscf == NULL) {
         ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                       "upstream is not found. %s:%d",
