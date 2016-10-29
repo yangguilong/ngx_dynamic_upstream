@@ -169,6 +169,14 @@ ngx_dynamic_upstream_handler(ngx_http_request_t *r)
         return NGX_HTTP_NOT_FOUND;
     }
 
+    if (uscf->shm_zone == NULL) {
+        ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+                      "shm_zone is empty. no `zone' defined? %s:%d",
+                      __FUNCTION__,
+                      __LINE__);
+        return NGX_HTTP_NOT_FOUND;
+    }
+
     shpool = (ngx_slab_pool_t *) uscf->shm_zone->shm.addr;
     ngx_shmtx_lock(&shpool->mutex);
     
